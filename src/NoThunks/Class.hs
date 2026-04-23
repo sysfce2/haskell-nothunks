@@ -904,12 +904,10 @@ checkContainsThunks x = go (asBox x)
   where
     go :: Box -> IO Bool
     go b = do
-        c <- getBoxedClosureData b
-        if closureIsThunk c then
-          return True
-        else do
-          c' <- getBoxedClosureData b
-          anyM go (allClosures c')
+      c <- getBoxedClosureData b
+      if closureIsThunk c
+      then return True
+      else anyM go (allClosures c)
 
 -- | Check if the given 'Closure' is a thunk.
 --
